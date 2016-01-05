@@ -3,6 +3,7 @@ package de.krien.game.survivalists.model.player;
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class Player {
 
@@ -16,6 +17,7 @@ public class Player {
 	private int movementSpeed;
 
 	private Image image;
+	private ImageView imageView;
 
 	public Player() {
 		super();
@@ -64,5 +66,15 @@ public class Player {
 	public void setImage(Image image) {
 		this.image = image;
 	}
+
+	public ImageView getImageView() {
+		return imageView;
+	}
+
+	public void setImageView(ImageView imageView) {
+		this.imageView = imageView;
+	}
+	
+	
 
 }
