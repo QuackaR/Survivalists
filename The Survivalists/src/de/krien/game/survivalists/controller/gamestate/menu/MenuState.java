@@ -1,6 +1,7 @@
 package de.krien.game.survivalists.controller.gamestate.menu;
 
 import de.krien.game.survivalists.controller.gamestate.IGameState;
+import de.krien.game.survivalists.controller.input.InputHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 

@@ -1,53 +1,46 @@
 package de.krien.game.survivalists.controller.gamestate.play;
 
+import java.util.List;
+
 import de.krien.game.survivalists.controller.gamestate.IGameState;
+import de.krien.game.survivalists.controller.input.InputHandler;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.input.KeyCode;
 
 public enum PlayState implements IGameState {
 
 	INSTANCE;
-	
+
 	public int pos_X = 50;
 	public int pos_Y = 50;
-	
+
 	public int width = 25;
 	public int height = 25;
 	
-	boolean move_X = true;
-	boolean move_Y = true;
+	public int movementSpeed = 5;
 
 	public void draw(GraphicsContext graphicalContext) {
-		
 		graphicalContext.fillOval(pos_X, pos_Y, width, height);
-		
 	}
 
 	public void update(float secondsElapsed) {
-		if(move_X) {
-			pos_X++;
-		} else {
-			pos_X--;
-		}
+		List<KeyCode> pressedKeys = InputHandler.INSTANCE.getKeyPressedList();
 		
-		if(move_Y) {
-			pos_Y++;
-		} else {
-			pos_Y--;
+		if (pressedKeys.contains(KeyCode.D)) {
+			pos_X+=movementSpeed;
 		}
-		
-		if(pos_X > 250) {
-			move_X = false;
+
+		if (pressedKeys.contains(KeyCode.A)) {
+			pos_X-=movementSpeed;
 		}
-		if(pos_X < 50) {
-			move_X = true;
+
+		if (pressedKeys.contains(KeyCode.S)) {
+			pos_Y+=movementSpeed;
 		}
-		
-		if(pos_Y > 250) {
-			move_Y = false;
+
+		if (pressedKeys.contains(KeyCode.W)) {
+			pos_Y-=movementSpeed;
 		}
-		if(pos_Y < 50) {
-			move_Y = true;
-		}
-		
+
 	}
 }

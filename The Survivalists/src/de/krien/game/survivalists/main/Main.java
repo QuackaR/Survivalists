@@ -1,6 +1,7 @@
 package de.krien.game.survivalists.main;
 
-import de.krien.game.survivalists.controller.GameLoop;
+import de.krien.game.survivalists.controller.game.GameLoop;
+import de.krien.game.survivalists.controller.input.InputHandler;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -9,8 +10,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-	private double SCENE_WIDTH = 400;
-	private double SCENE_HEIGHT = 800;
+	private double SCENE_WIDTH = 800;
+	private double SCENE_HEIGHT = 600;
 
 	
 	
@@ -28,6 +29,7 @@ public class Main extends Application {
 	}
 
 	private void runGameLoop(Group root) {
+		InputHandler.INSTANCE.addKeyEventHandler(root);
 		AnimationTimer timer = new GameLoop(root);
 		timer.start();
 	}

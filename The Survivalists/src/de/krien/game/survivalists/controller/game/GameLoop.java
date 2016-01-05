@@ -1,8 +1,8 @@
-package de.krien.game.survivalists.controller;
+package de.krien.game.survivalists.controller.game;
 
+import de.krien.game.survivalists.controller.input.InputHandler;
 import javafx.animation.AnimationTimer;
 import javafx.scene.Group;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
 public class GameLoop extends AnimationTimer {
@@ -28,30 +28,12 @@ public class GameLoop extends AnimationTimer {
 		float secondsElapsedCapped = Math.min(secondsElapsed, maximumStep);
 		previousTime = currentTime;
 
-		GraphicsContext graphicalContext = createGraphicsContext();
-
-		GameManager.INSTANCE.draw(graphicalContext);
+		GraphicsContext graphicsContext = GraphicsContextFactory.createGraphicsContext(root);
+		
+		GameManager.INSTANCE.draw(graphicsContext);
 		GameManager.INSTANCE.update(secondsElapsedCapped);
-
-	}
-
-	private GraphicsContext createGraphicsContext() {
-		removeOldCanvas();
-		GraphicsContext graphicsContext = createNewGraphicsContext();
-		return graphicsContext;
-	}
-
-	private GraphicsContext createNewGraphicsContext() {
-		Canvas canvas = new Canvas(root.getScene().getHeight(), root.getScene().getWidth());
-		GraphicsContext graphicalContext = canvas.getGraphicsContext2D();
-		root.getChildren().add(canvas);
-		return graphicalContext;
-	}
-
-	private void removeOldCanvas() {
-		if (root.getChildren().size() > 0) {
-			root.getChildren().remove(0);
-		}
+		
+		InputHandler.INSTANCE.reset();
 	}
 
 	@Override
