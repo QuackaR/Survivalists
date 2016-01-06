@@ -8,15 +8,15 @@ import javafx.scene.image.ImageView;
 public class Player {
 
 	private final int DEFAULT_POSITION = 50; // Temporary
-	private final int DEFAULT_SIZE = 75;
+	private final int DEFAULT_SIZE = 25;
 	private final int DEFAULT_MOVEMENT_SIZE = 5;
-	private final int DEFAULT_ROTATION = 0;
-	private final String DEFAULT_IMAGE = "res/player.jpg";
+	private final double DEFAULT_ROTATION = 0;
+	private final String DEFAULT_IMAGE = "res/player.gif";
 
 	private Vector2D position;
 	private Vector2D size;
 	private int movementSpeed;
-	private int rotation;
+	private double rotation;
 
 	private Image image;
 	private ImageView imageView;
@@ -30,7 +30,7 @@ public class Player {
 		this.image = new Image(DEFAULT_IMAGE);
 	}
 
-	public Player(Vector2D position, Vector2D size, int movementSpeed, int rotation, Image image) {
+	public Player(Vector2D position, Vector2D size, int movementSpeed, double rotation, Image image) {
 		super();
 		this.position = position;
 		this.size = size;
@@ -63,11 +63,11 @@ public class Player {
 		this.movementSpeed = movementSpeed;
 	}
 
-	public int getRotation() {
+	public double getRotation() {
 		return rotation;
 	}
 
-	public void setRotation(int rotation) {
+	public void setRotation(double rotation) {
 		this.rotation = rotation;
 	}
 

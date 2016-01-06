@@ -1,5 +1,6 @@
 package de.krien.game.survivalists.controller.gamestate.menu;
 
+import de.krien.game.survivalists.controller.game.GraphicsContextFactory;
 import de.krien.game.survivalists.controller.gamestate.IGameState;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -11,7 +12,8 @@ public enum MenuState implements IGameState {
 	private EMenuEntry activeMenuEntry = EMenuEntry.PLAY;
 	private static final int DISTANCE = 50;
 
-	public void draw(GraphicsContext graphicalContext) {
+	public void draw() {
+		GraphicsContext graphicalContext = GraphicsContextFactory.createGraphicsContext();
 		int count = 0;
 		for (EMenuEntry menuEntry : EMenuEntry.values()) {
 			// int positionX = getTextPositionX(graphics, menuEntry);

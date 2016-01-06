@@ -3,7 +3,6 @@ package de.krien.game.survivalists.controller.game;
 import de.krien.game.survivalists.controller.gamestate.EGameState;
 import de.krien.game.survivalists.controller.gamestate.menu.MenuState;
 import de.krien.game.survivalists.controller.gamestate.play.PlayState;
-import javafx.scene.canvas.GraphicsContext;
 
 public enum GameManager {
 
@@ -11,13 +10,13 @@ public enum GameManager {
 	
     private EGameState gameState = EGameState.PLAY;
 
-    public void draw(GraphicsContext graphicalContext) {
+    public void draw() {
         switch (gameState) {
         case PLAY:
-            PlayState.INSTANCE.draw(graphicalContext);
+            PlayState.INSTANCE.draw();
             break;
         case MENU:
-            MenuState.INSTANCE.draw(graphicalContext);
+            MenuState.INSTANCE.draw();
             break;
         case SETTINGS:
 //            settingsState.draw(graphicalContext);
