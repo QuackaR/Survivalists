@@ -3,7 +3,6 @@ package de.krien.game.survivalists.controller.game;
 import de.krien.game.survivalists.controller.gamestate.EGameState;
 import de.krien.game.survivalists.controller.gamestate.menu.MenuState;
 import de.krien.game.survivalists.controller.gamestate.play.PlayState;
-import de.krien.game.survivalists.controller.input.InputHandler;
 import javafx.scene.canvas.GraphicsContext;
 
 public enum GameManager {

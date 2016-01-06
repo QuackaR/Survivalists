@@ -68,7 +68,9 @@ public enum PlayState implements IGameState {
 	//TODO http://stackoverflow.com/questions/33613664/javafx-drawimage-rotated
 	private void rotateImage(int rotation) {
 		ImageView imageView = new ImageView(player.getImage());
-		imageView.setRotate(rotation);
+		int rotationToApply = rotation - player.getRotation();
+		player.setRotation(rotation);
+		imageView.setRotate(rotationToApply);
 		SnapshotParameters params = new SnapshotParameters();
 		params.setFill(Color.TRANSPARENT);
 		player.setImage(imageView.snapshot(params, null));
