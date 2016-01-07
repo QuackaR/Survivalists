@@ -7,7 +7,7 @@ import javafx.scene.image.ImageView;
 
 public class Player {
 
-	private final int DEFAULT_POSITION = 50; // Temporary
+	private final int DEFAULT_POSITION = 250; // Temporary
 	private final int DEFAULT_SIZE = 25;
 	private final int DEFAULT_MOVEMENT_SIZE = 5;
 	private final double DEFAULT_ROTATION = 0;
@@ -45,6 +45,13 @@ public class Player {
 
 	public void setPosition(Vector2D position) {
 		this.position = position;
+	}
+	
+	public Vector2D getCenterPosition() {
+		double centerX = position.getX() + (image.getWidth() / 2);
+		double centerY = position.getY() + (image.getHeight() / 2);
+		Vector2D centerPosition = new Vector2D(centerX, centerY);
+		return centerPosition;
 	}
 
 	public Vector2D getSize() {

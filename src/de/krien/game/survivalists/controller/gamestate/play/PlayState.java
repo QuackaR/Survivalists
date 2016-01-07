@@ -9,7 +9,6 @@ import de.krien.game.survivalists.controller.game.GraphicsContextFactory;
 import de.krien.game.survivalists.controller.gamestate.IGameState;
 import de.krien.game.survivalists.controller.input.InputHandler;
 import de.krien.game.survivalists.model.player.Player;
-import javafx.geometry.Point2D;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.input.KeyCode;
 import javafx.scene.transform.Rotate;
@@ -21,92 +20,47 @@ public enum PlayState implements IGameState {
 	private Player player = new Player();
 
 	private void rotate(GraphicsContext gc, double angle, double px, double py) {
-        Rotate r = new Rotate(angle, px, py);
-        gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
-    }
-	
+		Rotate r = new Rotate(angle, px, py);
+		gc.setTransform(r.getMxx(), r.getMyx(), r.getMxy(), r.getMyy(), r.getTx(), r.getTy());
+	}
+
 	public void draw() {
 		GraphicsContext graphicsContext = GraphicsContextFactory.createGraphicsContext();
-		double playerCenterX = player.getPosition().getX() + player.getImage().getWidth() / 2;
-		double playerCenterY = player.getPosition().getY() + player.getImage().getHeight() / 2;
-
-		rotate(
-				graphicsContext, 
-				player.getRotation(), 
-				playerCenterX, 
-				playerCenterY
-		);
-		graphicsContext.drawImage(
-				player.getImage(), 
-				player.getPosition().getX(), 
-				player.getPosition().getY()
-		);
-		graphicsContext.strokeRect(
-				player.getPosition().getX(),
-				player.getPosition().getY(),
-				player.getImage().getWidth(),
-				player.getImage().getHeight()
-		);
-		GraphicsContext gc = GraphicsContextFactory.createNewGraphicsContext();
+		rotate(graphicsContext, player.getRotation(), player.getCenterPosition().getX(), player.getCenterPosition().getY());
+		graphicsContext.drawImage(player.getImage(), player.getPosition().getX(), player.getPosition().getY());
+//		graphicsContext.strokeRect(player.getPosition().getX(), player.getPosition().getY(), player.getImage().getWidth(),player.getImage().getHeight());
 		
-		double mouseX = InputHandler.INSTANCE.getMousePosition().getX();
-		double mouseY = InputHandler.INSTANCE.getMousePosition().getY();
-		
-		gc.fillOval(mouseX, mouseY, 5, 5);
-		gc.fillOval(playerCenterX, playerCenterY, 5, 5);
-		gc.strokeLine(playerCenterX, playerCenterY, mouseX, mouseY);
+//		GraphicsContext gc = GraphicsContextFactory.createNewGraphicsContext();
+//		double mouseX = InputHandler.INSTANCE.getMousePosition().getX();
+//		double mouseY = InputHandler.INSTANCE.getMousePosition().getY();
+//		gc.fillOval(mouseX - 2 , mouseY - 2, 4, 4);
+//		gc.fillOval(player.getCenterPosition().getX() - 2, player.getCenterPosition().getY() - 2, 4, 4);
+//		gc.strokeLine(player.getCenterPosition().getX(), player.getCenterPosition().getY(), mouseX, mouseY);
 	}
 
 	public void update(float secondsElapsed) {
 		handleMovement();
-		handleDirection2();
+		handleDirection();
 	}
 
 	private void handleDirection() {
-		Vector2D playerPosition = player.getPosition();
-		Vector2D mousePoisition = InputHandler.INSTANCE.getMousePosition();
-
-		Atan2 atan2 = new Atan2();
-		double radians = atan2.value(
-				mousePoisition.getX() - (playerPosition.getX() + player.getImage().getWidth())/2,
-				mousePoisition.getY() - (playerPosition.getY() + player.getImage().getHeight())/2
-		);
-		double degree = (radians * (180 / Math.PI) * -1) + 90;
-		player.setRotation(degree);
-		System.out.println("##################");
-		System.out.println("Player Position: " + playerPosition.getX() + "/" + playerPosition.getY());
-		System.out.println("Mouse Position: " + mousePoisition.getX() + "/" + mousePoisition.getY());
-		System.out.println("Radian: " + radians);
-		System.out.println("Degree: " + degree);
-		System.out.println("##################");
-	}
-	
-	private void handleDirection2() {
-		Vector2D playerPosition = player.getPosition();
+		Vector2D playerCenterPosition = player.getCenterPosition();
 		Vector2D mousePosition = InputHandler.INSTANCE.getMousePosition();
-		
-		double imageCenterX = (playerPosition.getX() + player.getImage().getWidth()) / 2;
-		double imageCenterY = (playerPosition.getY() + player.getImage().getHeight()) / 2;
-		
-		Point2D centerPos = new Point2D(imageCenterX, imageCenterY);
-		Point2D mousePos = new Point2D(mousePosition.getX(), mousePosition.getY());
-		
-		double distanceX = mousePosition.getX() - imageCenterX;
-		double distanceY = mousePosition.getY() - imageCenterY;
-		
-		double radians = Math.atan2(distanceX, distanceY);
-		double angle = (360 - Math.toDegrees(radians)) % 360 + 90;
-		double degree = new Point2D(1, 0).angle(mousePos.subtract(centerPos));
+		double degree = getDirectionInDegree(playerCenterPosition, mousePosition);
 		player.setRotation(degree);
-		
-		System.out.println("##################");
-		System.out.println("Image Center: " + imageCenterX + "/" + imageCenterY);
-		System.out.println("Mouse Position: " + mousePosition.getX() + "/" + mousePosition.getY());
-		System.out.println("Distance: " + distanceX + "/" + distanceY);
-		System.out.println("Radians: " + radians);
-		System.out.println("Angle: " + angle + " vs " + degree);
-		System.out.println("##################");
-	}	
+	}
+
+	private double getDirectionInDegree(Vector2D playerCenterPosition, Vector2D mousePosition) {
+		double radians = getDirectionInRadians(playerCenterPosition, mousePosition);
+		double degree = (360 + ((radians * (180 / Math.PI) * -1) + 90)) % 360;
+		return degree;
+	}
+
+	private double getDirectionInRadians(Vector2D playerCenterPosition, Vector2D mousePosition) {
+		Atan2 atan2 = new Atan2();
+		double radians = atan2.value(mousePosition.getX() - playerCenterPosition.getX(), mousePosition.getY() - playerCenterPosition.getY());
+		return radians;
+	}
 
 	// TODO Create new class and extract method - PlayStateInputHandler
 	// TODO Refactor code
