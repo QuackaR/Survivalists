@@ -6,6 +6,7 @@ import de.krien.game.survivalists.controller.game.GraphicsContextFactory;
 import de.krien.game.survivalists.controller.gamestate.IGameState;
 import de.krien.game.survivalists.model.entities.GameEntities;
 import de.krien.game.survivalists.model.entities.IGameEntity;
+import de.krien.game.survivalists.model.entities.util.PositionUtil;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.transform.Rotate;
 
@@ -20,11 +21,21 @@ public enum PlayState implements IGameState {
 
 	public void draw() {
 		List<IGameEntity> gameEntities = GameEntities.INSTANCE.getEntityList();
+		GraphicsContextFactory.createGraphicsContext();
 		
 		for(IGameEntity entity : gameEntities) {
-			GraphicsContext graphicsContext = GraphicsContextFactory.createGraphicsContext();
-			rotate(graphicsContext, entity.getRotation(), entity.getCenterPosition().getX(), entity.getCenterPosition().getY());
-			graphicsContext.drawImage(entity.getImage(), entity.getPosition().getX(), entity.getPosition().getY());
+			GraphicsContext graphicsContext = GraphicsContextFactory.createNewGraphicsContext();
+			rotate(
+				graphicsContext, 
+				entity.getRotation(), 
+				PositionUtil.getCenterPosition(entity).getX(), 
+				PositionUtil.getCenterPosition(entity).getY()
+			);
+			graphicsContext.drawImage(
+				entity.getImage(), 
+				entity.getPosition().getX(), 
+				entity.getPosition().getY()
+			);
 		}
 
 //		graphicsContext.strokeRect(player.getPosition().getX(), player.getPosition().getY(), player.getImage().getWidth(),player.getImage().getHeight());

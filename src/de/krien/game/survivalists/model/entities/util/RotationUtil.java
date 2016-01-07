@@ -9,12 +9,15 @@ import de.krien.game.survivalists.model.entities.IGameEntity;
 public class RotationUtil {
 	
 	public static void rotateEntityToOtherEntity(IGameEntity rotateEntity, IGameEntity destinationEntity) {
-		double degree = getDirectionInDegree(rotateEntity.getCenterPosition(), destinationEntity.getCenterPosition());
+		double degree = getDirectionInDegree(
+				PositionUtil.getCenterPosition(rotateEntity), 
+				PositionUtil.getCenterPosition(destinationEntity)
+		);
 		rotateEntity.setRotation(degree);
 	}
 
 	public static void rotateEntityToCursor(IGameEntity entity) {
-		Vector2D playerCenterPosition = entity.getCenterPosition();
+		Vector2D playerCenterPosition = PositionUtil.getCenterPosition(entity);
 		Vector2D cursorPosition = InputHandler.INSTANCE.getMousePosition();
 		double degree = getDirectionInDegree(playerCenterPosition, cursorPosition);
 		entity.setRotation(degree);
