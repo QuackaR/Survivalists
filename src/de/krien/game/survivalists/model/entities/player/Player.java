@@ -1,11 +1,14 @@
-package de.krien.game.survivalists.model.player;
+package de.krien.game.survivalists.model.entities.player;
 
 import org.apache.commons.math3.geometry.euclidean.twod.Vector2D;
 
+import de.krien.game.survivalists.model.entities.EGameEntity;
+import de.krien.game.survivalists.model.entities.IGameEntity;
+import de.krien.game.survivalists.model.entities.util.MovementUtil;
+import de.krien.game.survivalists.model.entities.util.RotationUtil;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-public class Player {
+public class Player implements IGameEntity {
 
 	private final int DEFAULT_POSITION = 250; // Temporary
 	private final int DEFAULT_SIZE = 25;
@@ -15,13 +18,14 @@ public class Player {
 	private final double DEFAULT_ROTATION = 0;
 	private final String DEFAULT_IMAGE = "res/player.png";
 
+	private EGameEntity entityType;
+
 	private Vector2D position;
 	private Vector2D size;
 	private int movementSpeed;
 	private double rotation;
-
 	private Image image;
-	private ImageView imageView;
+	private PlayerMovement playerMovement;
 
 	public Player() {
 		super();
@@ -30,6 +34,7 @@ public class Player {
 		this.movementSpeed = WALK_MOVEMENT_SPEED;
 		this.rotation = DEFAULT_ROTATION;
 		this.image = new Image(DEFAULT_IMAGE);
+		this.playerMovement = new PlayerMovement();
 	}
 
 	public Player(Vector2D position, Vector2D size, int movementSpeed, double rotation, Image image) {
@@ -40,17 +45,34 @@ public class Player {
 		this.rotation = rotation;
 		this.image = image;
 	}
+
+	@Override
+	public void update() {
+		MovementUtil.moveEntity(this);
+		RotationUtil.rotateEntityToCursor(this);
+	}
 	
 	public void running() {
 		movementSpeed = RUN_MOVEMENT_SPEED;
 	}
-	
+
 	public void sneak() {
 		movementSpeed = SNEAK_MOVEMENT_SPEED;
 	}
-	
+
 	public void walk() {
 		movementSpeed = WALK_MOVEMENT_SPEED;
+	}
+
+	public EGameEntity getEntityType() {
+		return entityType;
+	}
+
+	public Vector2D getCenterPosition() {
+		double centerX = position.getX() + (image.getWidth() / 2);
+		double centerY = position.getY() + (image.getHeight() / 2);
+		Vector2D centerPosition = new Vector2D(centerX, centerY);
+		return centerPosition;
 	}
 
 	public Vector2D getPosition() {
@@ -59,13 +81,6 @@ public class Player {
 
 	public void setPosition(Vector2D position) {
 		this.position = position;
-	}
-
-	public Vector2D getCenterPosition() {
-		double centerX = position.getX() + (image.getWidth() / 2);
-		double centerY = position.getY() + (image.getHeight() / 2);
-		Vector2D centerPosition = new Vector2D(centerX, centerY);
-		return centerPosition;
 	}
 
 	public Vector2D getSize() {
@@ -100,12 +115,11 @@ public class Player {
 		this.image = image;
 	}
 
-	public ImageView getImageView() {
-		return imageView;
+	public PlayerMovement getPlayerMovement() {
+		return playerMovement;
 	}
 
-	public void setImageView(ImageView imageView) {
-		this.imageView = imageView;
+	public void setPlayerMovement(PlayerMovement playerMovement) {
+		this.playerMovement = playerMovement;
 	}
-
 }
