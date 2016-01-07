@@ -9,9 +9,11 @@ public class Player {
 
 	private final int DEFAULT_POSITION = 250; // Temporary
 	private final int DEFAULT_SIZE = 25;
-	private final int DEFAULT_MOVEMENT_SIZE = 5;
+	private final int SNEAK_MOVEMENT_SPEED = 1;
+	private final int WALK_MOVEMENT_SPEED = 3;
+	private final int RUN_MOVEMENT_SPEED = 5;
 	private final double DEFAULT_ROTATION = 0;
-	private final String DEFAULT_IMAGE = "res/player.gif";
+	private final String DEFAULT_IMAGE = "res/player.png";
 
 	private Vector2D position;
 	private Vector2D size;
@@ -25,7 +27,7 @@ public class Player {
 		super();
 		this.position = new Vector2D(DEFAULT_POSITION, DEFAULT_POSITION);
 		this.size = new Vector2D(DEFAULT_SIZE, DEFAULT_SIZE);
-		this.movementSpeed = DEFAULT_MOVEMENT_SIZE;
+		this.movementSpeed = WALK_MOVEMENT_SPEED;
 		this.rotation = DEFAULT_ROTATION;
 		this.image = new Image(DEFAULT_IMAGE);
 	}
@@ -38,6 +40,18 @@ public class Player {
 		this.rotation = rotation;
 		this.image = image;
 	}
+	
+	public void running() {
+		movementSpeed = RUN_MOVEMENT_SPEED;
+	}
+	
+	public void sneak() {
+		movementSpeed = SNEAK_MOVEMENT_SPEED;
+	}
+	
+	public void walk() {
+		movementSpeed = WALK_MOVEMENT_SPEED;
+	}
 
 	public Vector2D getPosition() {
 		return position;
@@ -46,7 +60,7 @@ public class Player {
 	public void setPosition(Vector2D position) {
 		this.position = position;
 	}
-	
+
 	public Vector2D getCenterPosition() {
 		double centerX = position.getX() + (image.getWidth() / 2);
 		double centerY = position.getY() + (image.getHeight() / 2);

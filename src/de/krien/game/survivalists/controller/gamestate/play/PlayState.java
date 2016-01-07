@@ -39,14 +39,14 @@ public enum PlayState implements IGameState {
 	}
 
 	public void update(float secondsElapsed) {
-		handleMovement();
-		handleDirection();
+		movePlayer();
+		rotatePlayerToCursor();
 	}
 
-	private void handleDirection() {
+	private void rotatePlayerToCursor() {
 		Vector2D playerCenterPosition = player.getCenterPosition();
-		Vector2D mousePosition = InputHandler.INSTANCE.getMousePosition();
-		double degree = getDirectionInDegree(playerCenterPosition, mousePosition);
+		Vector2D cursorPosition = InputHandler.INSTANCE.getMousePosition();
+		double degree = getDirectionInDegree(playerCenterPosition, cursorPosition);
 		player.setRotation(degree);
 	}
 
@@ -62,38 +62,93 @@ public enum PlayState implements IGameState {
 		return radians;
 	}
 
+	boolean moveRight = false;
+	boolean moveLeft = false;
+	boolean moveUp = false;
+	boolean moveDown = false;
+	
 	// TODO Create new class and extract method - PlayStateInputHandler
 	// TODO Refactor code
-	private void handleMovement() {
+	private void movePlayer() {
+		checkPressedKeys();
+		checkReleasedKeys();
+		doMovement();
+	}
+
+	private void checkPressedKeys() {
 		List<KeyCode> pressedKeys = InputHandler.INSTANCE.getKeyPressedList();
 
 		if (pressedKeys.contains(KeyCode.D)) {
-			player.setPosition(player.getPosition().add(new Vector2D(player.getMovementSpeed(), 0)));
+			moveRight = true;
 		}
 
 		if (pressedKeys.contains(KeyCode.A)) {
-			player.setPosition(player.getPosition().subtract(new Vector2D(player.getMovementSpeed(), 0)));
+			moveLeft = true;
 		}
 
 		if (pressedKeys.contains(KeyCode.S)) {
-			player.setPosition(player.getPosition().add(new Vector2D(0, player.getMovementSpeed())));
+			moveDown = true;
 		}
 
 		if (pressedKeys.contains(KeyCode.W)) {
+			moveUp = true;
+		}
+		
+		if(pressedKeys.contains(KeyCode.SHIFT)) {
+			player.running();
+		}
+		
+		if(pressedKeys.contains(KeyCode.CONTROL)) {
+			player.sneak();
+		}
+	}
+	
+	private void checkReleasedKeys() {
+		List<KeyCode> releasedKeys = InputHandler.INSTANCE.getKeyReleasedList();
+
+		if (releasedKeys.contains(KeyCode.D)) {
+			moveRight = false;
+		}
+
+		if (releasedKeys.contains(KeyCode.A)) {
+			moveLeft = false;
+		}
+
+		if (releasedKeys.contains(KeyCode.S)) {
+			moveDown = false;
+		}
+
+		if (releasedKeys.contains(KeyCode.W)) {
+			moveUp = false;
+		}
+		
+		if(releasedKeys.contains(KeyCode.SHIFT)) {
+			player.walk();
+		}
+		
+		if(releasedKeys.contains(KeyCode.CONTROL)) {
+			player.walk();
+		}
+		
+	}
+
+	private void doMovement() {
+		if (moveRight) {
+			player.setPosition(player.getPosition().add(new Vector2D(player.getMovementSpeed(), 0)));
+		}
+
+		if (moveLeft) {
+			player.setPosition(player.getPosition().subtract(new Vector2D(player.getMovementSpeed(), 0)));
+		}
+
+		if (moveDown) {
+			player.setPosition(player.getPosition().add(new Vector2D(0, player.getMovementSpeed())));
+		}
+
+		if (moveUp) {
 			player.setPosition(player.getPosition().subtract(new Vector2D(0, player.getMovementSpeed())));
 		}
 	}
 
-	// TODO http://stackoverflow.com/questions/33613664/javafx-drawimage-rotated
-	// private void rotateImage(double rotation) {
-	//
-	//
-	//// ImageView imageView = new ImageView(player.getImage());
-	//// double rotationToApply = rotation - player.getRotation();
-	//// player.setRotation(rotation);
-	//// imageView.setRotate(rotationToApply);
-	//// SnapshotParameters params = new SnapshotParameters();
-	//// params.setFill(Color.TRANSPARENT);
-	//// player.setImage(imageView.snapshot(params, null));
-	// }
+
 }
