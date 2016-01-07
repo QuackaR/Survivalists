@@ -10,7 +10,7 @@ public class Chest implements IGameEntity {
 	private final int DEFAULT_POSITION = 500; // Temporary
 	private final int DEFAULT_SIZE = 1;
 	private final double DEFAULT_ROTATION = 0;
-	private final String DEFAULT_IMAGE = "res/chest.png";
+	private final String DEFAULT_IMAGE = "res/Crate.png";
 
 	private Vector2D position;
 	private double sizeScalar;
