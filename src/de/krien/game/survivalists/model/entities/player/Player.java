@@ -15,7 +15,7 @@ public class Player implements IGameEntity {
 	private final int WALK_MOVEMENT_SPEED = 3;
 	private final int RUN_MOVEMENT_SPEED = 5;
 	private final double DEFAULT_ROTATION = 0;
-	private final String DEFAULT_IMAGE = "res/player.png";
+	private final String DEFAULT_IMAGE = "player.png";
 
 	private Vector2D position;
 	private double sizeScalar;
